@@ -286,12 +286,36 @@
         @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
         
         .welcome-msg {
-            font-size: 32px; 
-            color: #fff; margin: 40px 0 0 0; line-height: 1.5;
+            font-size: 24px; /* Reduced for visual hierarchy */
+            color: #fff; margin: 30px 0 0 0; line-height: 1.6;
             animation: fadeIn 1s forwards 0.5s; opacity: 0;
         }
         @keyframes fadeIn { to { opacity: 1; } }
+
+        /* Typography Hierarchy for the Welcome Screen */
         .highlight { color: #0f0; font-weight: 900; text-shadow: 0 0 20px #0f0; }
+        
+        #guest-name-display {
+            display: inline-block;
+            font-size: 38px; /* Massive name */
+            margin-top: 10px;
+        }
+        
+        #event-name-display {
+            display: inline-block;
+            font-size: 28px; /* Slightly smaller event name */
+            margin-top: 10px;
+        }
+
+        .sub-title {
+            display: block;
+            font-size: 24px;
+            color: #fff;
+            font-weight: 400;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
 
         /* --- SCREEN 4: COUNTDOWN WITH PROGRESS BAR --- */
         .countdown-wrapper {
@@ -346,15 +370,15 @@
             100% { width: 100%; }
         }
 
-        /* --- SCREEN 5: FINAL LOGO (BREATHING) --- */
+        /* --- SCREEN 5: FINAL LOGO (BREATHING ALMOST FULLSCREEN) --- */
         #screen-final-logo { 
             background-color: #000; 
             z-index: 100; 
         }
 
         .final-logo-container {
-            width: 70%;
-            height: 70%;
+            width: 100%; 
+            height: 100%; 
             display: flex;
             justify-content: center;
             align-items: center;
@@ -362,11 +386,10 @@
         }
 
         .final-logo {
-            max-width: 100%;
-            max-height: 100%;
+            max-width: 90vw; 
+            max-height: 90vh; 
+            object-fit: contain; 
             mix-blend-mode: screen; 
-            
-            /* Breathing Animation: 4 seconds per cycle */
             animation: breatheLogo 4s ease-in-out infinite;
         }
 
@@ -440,8 +463,10 @@
     <div id="screen-success" class="screen">
         <h1 class="status-accepted">ACCESS GRANTED</h1>
         <div class="welcome-msg">
-            Welcome <span class="highlight" id="guest-name-display">Guest</span><br>
-            to <br><span class="highlight" id="event-name-display">The Event</span>
+            Welcome<br>
+            <span class="highlight" id="guest-name-display">Guest Name Here</span><br>
+            to<br>
+            <span class="highlight" id="event-name-display">Event Name Here</span>
         </div>
     </div>
 
@@ -459,14 +484,16 @@
     <!-- SCREEN 5: FINAL LOGO SCREEN (BREATHING) -->
     <div id="screen-final-logo" class="screen">
         <div class="final-logo-container">
-            <!-- UPDATED FINAL LOGO FILENAME -->
             <img src="final.jpg" alt="Final Logo Error" class="final-logo">
         </div>
     </div>
 
     <script>
         // --- CONFIGURATION ---
-        const guestName = "VIP GUEST";
+        
+        // Updated VIP Name with the embedded Title styled in white
+        const guestName = "EN. ZULKURNAIN BIN ABDUL RAHMAN<br><span class='sub-title'>Pengarah Pendidikan Negeri Johor</span>";
+        
         const eventName = "MAJLIS PELANTIKAN SEKOLAH ANGKAT<br>UNIVERSITI TUN HUSSEIN ONN MALAYSIA FASA 3<br>DAN MAJLIS PENUTUPAN KEMBARA MERDEKA DIGITAL";
         
         // --- DOM Elements ---
@@ -484,8 +511,8 @@
 
         let scrambleInterval;
 
-        // Apply config
-        document.getElementById('guest-name-display').innerText = guestName;
+        // Apply config dynamically using innerHTML to render the <br> and <span> tags
+        document.getElementById('guest-name-display').innerHTML = guestName;
         document.getElementById('event-name-display').innerHTML = eventName;
 
         // ==========================================
@@ -596,7 +623,6 @@
             
             logoLfo = audioCtx.createOscillator();
             logoLfo.type = 'sine';
-            // Adjusted to exactly match the 4-second breathing animation (1/4 = 0.25 Hz)
             logoLfo.frequency.value = 0.25; 
             
             logoOscillators = freqs.map(freq => {
