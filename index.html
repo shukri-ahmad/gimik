@@ -5,15 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Digital Education Launch Sequence</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- We will inject the Google Font dynamically from the config file, but provide a fallback -->
+    <link id="dynamic-font" href="" rel="stylesheet">
     
     <style>
+        /* --- DYNAMIC THEME VARIABLES --- */
+        :root {
+            --theme-color: 0, 255, 0; /* Default Green fallback */
+            --theme-font: 'Orbitron', sans-serif;
+        }
+
         /* Base Styling */
         body {
             margin: 0;
             background-color: #010408; 
-            color: #0f0;
-            font-family: 'Orbitron', sans-serif;
+            color: rgb(var(--theme-color));
+            font-family: var(--theme-font);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -27,9 +34,9 @@
         .hidden-btn {
             position: fixed;
             bottom: 15px;
-            background: rgba(0, 255, 0, 0.02);
-            border: 1px solid rgba(0, 255, 0, 0.1);
-            color: rgba(0, 255, 0, 0.1);
+            background: rgba(var(--theme-color), 0.02);
+            border: 1px solid rgba(var(--theme-color), 0.1);
+            color: rgba(var(--theme-color), 0.1);
             width: 40px;
             height: 40px;
             border-radius: 5px;
@@ -43,9 +50,9 @@
             font-family: inherit;
         }
         .hidden-btn:hover, .hidden-btn:active {
-            background: rgba(0, 255, 0, 0.2);
-            border-color: #0f0;
-            color: #0f0;
+            background: rgba(var(--theme-color), 0.2);
+            border-color: rgb(var(--theme-color));
+            color: rgb(var(--theme-color));
         }
         
         #fullscreen-btn { right: 15px; }
@@ -62,7 +69,7 @@
             z-index: 9999;
         }
 
-        /* --- 2: UTHM LOGO FACE BACKGROUND --- */
+        /* --- 2: BACKGROUND WATERMARK --- */
         .bg-watermark {
             position: fixed;
             top: 50%; left: 50%;
@@ -91,7 +98,7 @@
         }
         .screen.active { display: flex; }
 
-        /* --- SCREEN 1: GREEN TURBINE EYES --- */
+        /* --- SCREEN 1: TURBINE EYES --- */
         .eyes-container {
             display: flex;
             gap: 160px; 
@@ -102,8 +109,8 @@
             width: 260px; 
             height: 260px; 
             border-radius: 50%;
-            background-color: #001100;
-            box-shadow: 0 0 70px #0f0, inset 0 0 60px #000;
+            background-color: rgba(var(--theme-color), 0.05);
+            box-shadow: 0 0 70px rgb(var(--theme-color)), inset 0 0 60px #000;
             position: relative;
             display: flex;
             justify-content: center;
@@ -116,7 +123,7 @@
             position: absolute;
             width: 85%; height: 85%;
             border-radius: 50%;
-            background: repeating-conic-gradient(from 0deg, #0f0 0deg 5deg, #004400 6deg 10deg);
+            background: repeating-conic-gradient(from 0deg, rgb(var(--theme-color)) 0deg 5deg, rgba(var(--theme-color), 0.2) 6deg 10deg);
             -webkit-mask-image: radial-gradient(circle, transparent 25%, black 26%, black 90%, transparent 100%);
             animation: spin 20s linear infinite; 
         }
@@ -126,7 +133,7 @@
             position: absolute;
             width: 35%; height: 35%;
             border-radius: 50%;
-            background: radial-gradient(circle, #fff 0%, #0f0 40%, transparent 70%);
+            background: radial-gradient(circle, #fff 0%, rgb(var(--theme-color)) 40%, transparent 70%);
             box-shadow: 0 0 35px #fff;
         }
 
@@ -146,9 +153,9 @@
         }
         
         #initiate-btn {
-            background: rgba(0, 255, 0, 0.1);
-            border: 2px solid #0f0;
-            color: #0f0;
+            background: rgba(var(--theme-color), 0.1);
+            border: 2px solid rgb(var(--theme-color));
+            color: rgb(var(--theme-color));
             padding: 25px 50px; 
             font-size: 28px;    
             border-radius: 8px;
@@ -157,13 +164,13 @@
             font-family: inherit;
             font-weight: 700;
             letter-spacing: 2px;
-            box-shadow: 0 0 25px rgba(0, 255, 0, 0.4);
+            box-shadow: 0 0 25px rgba(var(--theme-color), 0.4);
             transition: all 0.2s ease;
             z-index: 10;
             margin-top: 40px;
         }
         #initiate-btn:active {
-            background: #0f0;
+            background: rgb(var(--theme-color));
             color: #000;
             transform: scale(0.95);
         }
@@ -172,8 +179,8 @@
         #screen-scan {
             background-size: 50px 50px;
             background-image: 
-                linear-gradient(to right, rgba(0, 255, 0, 0.05) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(0, 255, 0, 0.05) 1px, transparent 1px);
+                linear-gradient(to right, rgba(var(--theme-color), 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(var(--theme-color), 0.05) 1px, transparent 1px);
         }
 
         .scan-instruction {
@@ -185,7 +192,7 @@
         }
         @keyframes pulse {
             from { opacity: 0.5; }
-            to { opacity: 1; text-shadow: 0 0 25px #0f0; }
+            to { opacity: 1; text-shadow: 0 0 25px rgb(var(--theme-color)); }
         }
 
         .scan-container {
@@ -197,7 +204,7 @@
             transform: scale(1.15);
             margin-top: 30px;
             border-radius: 50%;
-            box-shadow: 0 0 30px rgba(0,255,0,0.1);
+            box-shadow: 0 0 30px rgba(var(--theme-color), 0.1);
         }
 
         .generated-palm-image {
@@ -206,7 +213,7 @@
             object-fit: contain;
             mix-blend-mode: screen; 
             opacity: 0.6;
-            filter: drop-shadow(0 0 5px #0f0);
+            filter: drop-shadow(0 0 5px rgb(var(--theme-color)));
             transition: all 0.3s ease;
             z-index: 2;
         }
@@ -226,8 +233,8 @@
             top: 10%; left: 10%; width: 80%; height: 80%;
             border-radius: 50%;
             background-image: 
-                linear-gradient(rgba(0, 255, 0, 0.2) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 0, 0.2) 1px, transparent 1px);
+                linear-gradient(rgba(var(--theme-color), 0.2) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(var(--theme-color), 0.2) 1px, transparent 1px);
             background-size: 20px 20px;
             opacity: 0;
             z-index: 1;
@@ -236,9 +243,9 @@
         .hud-text {
             position: absolute;
             font-size: 14px;
-            color: #0f0;
+            color: rgb(var(--theme-color));
             font-family: 'Courier New', Courier, monospace;
-            text-shadow: 0 0 5px #0f0;
+            text-shadow: 0 0 5px rgb(var(--theme-color));
             letter-spacing: 1px;
         }
         .top-left { top: 20px; left: 20px; }
@@ -249,7 +256,7 @@
         .scanner-line {
             position: absolute; top: 0; left: -10%;
             width: 120%; height: 6px;
-            background: #fff; box-shadow: 0 0 40px 15px #0f0;
+            background: #fff; box-shadow: 0 0 40px 15px rgb(var(--theme-color));
             display: none; z-index: 10;
             border-radius: 50%;
         }
@@ -267,7 +274,7 @@
         }
         
         @keyframes imageScanGlow { 
-            to { opacity: 1; filter: drop-shadow(0 0 40px #0f0) brightness(1.8); } 
+            to { opacity: 1; filter: drop-shadow(0 0 40px rgb(var(--theme-color))) brightness(1.8); } 
         }
 
         @keyframes flashGrid {
@@ -278,8 +285,8 @@
         /* --- SCREEN 3: Success --- */
         .status-accepted {
             font-size: 100px; 
-            color: #0f0; margin: 0;
-            text-shadow: 0 0 50px #0f0; letter-spacing: 10px; font-weight: 900;
+            color: rgb(var(--theme-color)); margin: 0;
+            text-shadow: 0 0 50px rgb(var(--theme-color)); letter-spacing: 10px; font-weight: 900;
             animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
@@ -291,7 +298,7 @@
         }
         @keyframes fadeIn { to { opacity: 1; } }
 
-        .highlight { color: #0f0; font-weight: 900; text-shadow: 0 0 20px #0f0; }
+        .highlight { color: rgb(var(--theme-color)); font-weight: 900; text-shadow: 0 0 20px rgb(var(--theme-color)); }
         
         #guest-name-display {
             display: inline-block;
@@ -332,15 +339,15 @@
             color: #fff; 
             margin: 0; 
             line-height: 1;
-            text-shadow: 0 0 30px #0f0, 0 0 60px #0f0;
+            text-shadow: 0 0 30px rgb(var(--theme-color)), 0 0 60px rgb(var(--theme-color));
             animation: digital-pop 1s infinite; 
         }
 
         @keyframes digital-pop {
             0% { transform: scale(0.8); opacity: 0; }
-            10% { transform: scale(1.1); opacity: 1; text-shadow: 0 0 50px #0f0, 0 0 100px #0f0; }
-            20% { transform: scale(1); opacity: 1; text-shadow: 0 0 20px #0f0; }
-            90% { transform: scale(1); opacity: 1; text-shadow: 0 0 20px #0f0; }
+            10% { transform: scale(1.1); opacity: 1; text-shadow: 0 0 50px rgb(var(--theme-color)), 0 0 100px rgb(var(--theme-color)); }
+            20% { transform: scale(1); opacity: 1; text-shadow: 0 0 20px rgb(var(--theme-color)); }
+            90% { transform: scale(1); opacity: 1; text-shadow: 0 0 20px rgb(var(--theme-color)); }
             100% { transform: scale(0.8); opacity: 0; }
         }
 
@@ -348,19 +355,19 @@
             width: 60%;
             max-width: 600px;
             height: 15px;
-            border: 2px solid #0f0;
-            background: rgba(0, 50, 0, 0.4);
+            border: 2px solid rgb(var(--theme-color));
+            background: rgba(var(--theme-color), 0.4);
             border-radius: 10px;
             margin-top: 120px; 
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+            box-shadow: 0 0 15px rgba(var(--theme-color), 0.5);
             overflow: hidden;
         }
 
         .progress-bar-fill {
             height: 100%;
             width: 0%; 
-            background: #0f0;
-            box-shadow: 0 0 20px #0f0, inset 0 0 10px #fff;
+            background: rgb(var(--theme-color));
+            box-shadow: 0 0 20px rgb(var(--theme-color)), inset 0 0 10px #fff;
         }
 
         @keyframes grow-bar {
@@ -491,8 +498,21 @@
 
     <script>
         // ==========================================
-        //         APPLY CONFIGURATION
+        //         APPLY THEME & CONFIGURATION
         // ==========================================
+        
+        // 1. Apply Dynamic Colors and Fonts
+        if(AppConfig.themeColorRGB) {
+            document.documentElement.style.setProperty('--theme-color', AppConfig.themeColorRGB);
+        }
+        if(AppConfig.googleFontUrl) {
+            document.getElementById('dynamic-font').href = AppConfig.googleFontUrl;
+        }
+        if(AppConfig.fontFamily) {
+            document.documentElement.style.setProperty('--theme-font', AppConfig.fontFamily);
+        }
+
+        // 2. Apply Text and Images
         document.getElementById('guest-name-display').innerHTML = AppConfig.guestName;
         document.getElementById('event-name-display').innerHTML = AppConfig.eventName;
         document.getElementById('robot-shell').src = AppConfig.shellImage;
@@ -516,24 +536,28 @@
         let scrambleInterval;
 
         // ==========================================
-        //         AUDIO SYNTHESIZER ENGINE
+        //         AUDIO ENGINE (CUSTOM + SYNTH)
         // ==========================================
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         let audioCtx;
-        let scanOsc = null;
-        let scanGain = null;
+        let scanOsc = null, scanGain = null;
+        let logoOscillators = [], logoGain = null, logoLfo = null;
         
-        let logoOscillators = [];
-        let logoGain = null;
-        let logoLfo = null;
+        // HTML Audio Elements for Custom MP3/WAV uploads
+        let customAudio = {
+            startup: AppConfig.soundStartup ? new Audio(AppConfig.soundStartup) : null,
+            scanning: AppConfig.soundScanning ? new Audio(AppConfig.soundScanning) : null,
+            success: AppConfig.soundSuccess ? new Audio(AppConfig.soundSuccess) : null,
+            finalLogo: AppConfig.soundFinalLogo ? new Audio(AppConfig.soundFinalLogo) : null
+        };
+        
+        // Ensure continuous loops for specific sounds
+        if(customAudio.scanning) customAudio.scanning.loop = true;
+        if(customAudio.finalLogo) customAudio.finalLogo.loop = true;
 
         function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new AudioContext();
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
+            if (!audioCtx) audioCtx = new AudioContext();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
         }
 
         function playTone(freq, type, duration, vol = 0.1) {
@@ -542,25 +566,35 @@
             const gain = audioCtx.createGain();
             osc.type = type;
             osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-            
             gain.gain.setValueAtTime(vol, audioCtx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
-            
             osc.connect(gain);
             gain.connect(audioCtx.destination);
             osc.start();
             osc.stop(audioCtx.currentTime + duration);
         }
 
+        // STARTUP
         function playStartupSound() {
-            playTone(600, 'square', 0.1, 0.05);
-            setTimeout(() => playTone(900, 'square', 0.2, 0.05), 100);
+            if (customAudio.startup) {
+                customAudio.startup.currentTime = 0;
+                customAudio.startup.play();
+            } else {
+                playTone(600, 'square', 0.1, 0.05);
+                setTimeout(() => playTone(900, 'square', 0.2, 0.05), 100);
+            }
         }
 
+        // SUCCESS
         function playSuccessSound() {
-            playTone(440, 'sine', 1, 0.1);   
-            setTimeout(() => playTone(554.37, 'sine', 1, 0.1), 100); 
-            setTimeout(() => playTone(659.25, 'sine', 1.5, 0.1), 200); 
+            if (customAudio.success) {
+                customAudio.success.currentTime = 0;
+                customAudio.success.play();
+            } else {
+                playTone(440, 'sine', 1, 0.1);   
+                setTimeout(() => playTone(554.37, 'sine', 1, 0.1), 100); 
+                setTimeout(() => playTone(659.25, 'sine', 1.5, 0.1), 200); 
+            }
         }
 
         function playCountdownBeep() {
@@ -568,105 +602,109 @@
         }
 
         function playBassDrop() {
+            if (customAudio.finalLogo) return; // Skip synth bass drop if custom audio provided
             if (!audioCtx) return;
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.type = 'sine';
-            
             osc.frequency.setValueAtTime(150, audioCtx.currentTime);
             osc.frequency.exponentialRampToValueAtTime(20, audioCtx.currentTime + 2);
-            
             gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 3);
-            
             osc.connect(gain);
             gain.connect(audioCtx.destination);
             osc.start();
             osc.stop(audioCtx.currentTime + 3);
         }
 
+        // SCANNING
         function startScanSound() {
-            if (!audioCtx) return;
-            scanOsc = audioCtx.createOscillator();
-            scanGain = audioCtx.createGain();
-            scanOsc.type = 'sawtooth';
-            
-            scanOsc.frequency.setValueAtTime(100, audioCtx.currentTime);
-            scanOsc.frequency.linearRampToValueAtTime(600, audioCtx.currentTime + 1.5);
-            scanOsc.frequency.linearRampToValueAtTime(100, audioCtx.currentTime + 3.0);
-            
-            scanGain.gain.setValueAtTime(0.02, audioCtx.currentTime);
-            
-            scanOsc.connect(scanGain);
-            scanGain.connect(audioCtx.destination);
-            scanOsc.start();
-        }
-
-        function stopScanSound() {
-            if (scanOsc) {
-                scanOsc.stop();
-                scanOsc.disconnect();
-                scanGain.disconnect();
+            if (customAudio.scanning) {
+                customAudio.scanning.currentTime = 0;
+                customAudio.scanning.play();
+            } else {
+                if (!audioCtx) return;
+                scanOsc = audioCtx.createOscillator();
+                scanGain = audioCtx.createGain();
+                scanOsc.type = 'sawtooth';
+                scanOsc.frequency.setValueAtTime(100, audioCtx.currentTime);
+                scanOsc.frequency.linearRampToValueAtTime(600, audioCtx.currentTime + 1.5);
+                scanOsc.frequency.linearRampToValueAtTime(100, audioCtx.currentTime + 3.0);
+                scanGain.gain.setValueAtTime(0.02, audioCtx.currentTime);
+                scanOsc.connect(scanGain);
+                scanGain.connect(audioCtx.destination);
+                scanOsc.start();
             }
         }
 
-        function startLogoSound() {
-            if (!audioCtx) return;
-            
-            logoGain = audioCtx.createGain();
-            logoGain.gain.setValueAtTime(0.001, audioCtx.currentTime);
-            logoGain.gain.linearRampToValueAtTime(0.1, audioCtx.currentTime + 2); 
-            logoGain.connect(audioCtx.destination);
+        function stopScanSound() {
+            if (customAudio.scanning) {
+                customAudio.scanning.pause();
+                customAudio.scanning.currentTime = 0;
+            } else {
+                if (scanOsc) {
+                    scanOsc.stop();
+                    scanOsc.disconnect();
+                    scanGain.disconnect();
+                }
+            }
+        }
 
-            const freqs = [220.00, 261.63, 329.63, 392.00, 493.88];
-            
-            logoLfo = audioCtx.createOscillator();
-            logoLfo.type = 'sine';
-            logoLfo.frequency.value = 0.25; 
-            
-            logoOscillators = freqs.map(freq => {
-                let osc = audioCtx.createOscillator();
-                osc.type = 'sine';
-                osc.frequency.value = freq;
+        // LOGO HUM / BGM
+        function startLogoSound() {
+            if (customAudio.finalLogo) {
+                customAudio.finalLogo.currentTime = 0;
+                customAudio.finalLogo.play();
+            } else {
+                if (!audioCtx) return;
+                logoGain = audioCtx.createGain();
+                logoGain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+                logoGain.gain.linearRampToValueAtTime(0.1, audioCtx.currentTime + 2); 
+                logoGain.connect(audioCtx.destination);
+
+                const freqs = [220.00, 261.63, 329.63, 392.00, 493.88];
+                logoLfo = audioCtx.createOscillator();
+                logoLfo.type = 'sine';
+                logoLfo.frequency.value = 0.25; 
                 
-                let vca = audioCtx.createGain();
-                vca.gain.value = 0.5; 
-                
-                let lfoDepth = audioCtx.createGain();
-                lfoDepth.gain.value = 0.4; 
-                logoLfo.connect(lfoDepth);
-                lfoDepth.connect(vca.gain);
-                
-                osc.connect(vca);
-                vca.connect(logoGain);
-                
-                osc.start();
-                return { osc, vca, lfoDepth };
-            });
-            
-            logoLfo.start();
+                logoOscillators = freqs.map(freq => {
+                    let osc = audioCtx.createOscillator();
+                    osc.type = 'sine';
+                    osc.frequency.value = freq;
+                    let vca = audioCtx.createGain();
+                    vca.gain.value = 0.5; 
+                    let lfoDepth = audioCtx.createGain();
+                    lfoDepth.gain.value = 0.4; 
+                    logoLfo.connect(lfoDepth);
+                    lfoDepth.connect(vca.gain);
+                    osc.connect(vca);
+                    vca.connect(logoGain);
+                    osc.start();
+                    return { osc, vca, lfoDepth };
+                });
+                logoLfo.start();
+            }
         }
 
         function stopLogoSound() {
-            if (logoGain) {
-                logoGain.gain.linearRampToValueAtTime(0.001, audioCtx.currentTime + 1.5);
-                setTimeout(() => {
-                    logoOscillators.forEach(nodes => {
-                        nodes.osc.stop();
-                        nodes.osc.disconnect();
-                        nodes.vca.disconnect();
-                        nodes.lfoDepth.disconnect();
-                    });
-                    if (logoLfo) {
-                        logoLfo.stop();
-                        logoLfo.disconnect();
-                    }
-                    if (logoGain) logoGain.disconnect();
-                    
-                    logoOscillators = [];
-                    logoGain = null;
-                    logoLfo = null;
-                }, 1500);
+            if (customAudio.finalLogo) {
+                customAudio.finalLogo.pause();
+                customAudio.finalLogo.currentTime = 0;
+            } else {
+                if (logoGain) {
+                    logoGain.gain.linearRampToValueAtTime(0.001, audioCtx.currentTime + 1.5);
+                    setTimeout(() => {
+                        logoOscillators.forEach(nodes => {
+                            nodes.osc.stop();
+                            nodes.osc.disconnect();
+                            nodes.vca.disconnect();
+                            nodes.lfoDepth.disconnect();
+                        });
+                        if (logoLfo) { logoLfo.stop(); logoLfo.disconnect(); }
+                        if (logoGain) logoGain.disconnect();
+                        logoOscillators = []; logoGain = null; logoLfo = null;
+                    }, 1500);
+                }
             }
         }
 
@@ -766,7 +804,6 @@
 
         function showFinalLogoScreen() {
             playBassDrop(); 
-            
             startLogoSound();
 
             screenCountdown.classList.remove('active');
