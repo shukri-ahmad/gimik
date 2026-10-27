@@ -24,12 +24,12 @@
         }
 
         /* --- HIDDEN UTILITY BUTTONS --- */
-        #fullscreen-btn, #refresh-btn {
+        .hidden-btn {
             position: fixed;
             bottom: 15px;
-            background: rgba(0, 255, 0, 0.05);
-            border: 1px solid rgba(0, 255, 0, 0.2);
-            color: rgba(0, 255, 0, 0.3);
+            background: rgba(0, 255, 0, 0.02);
+            border: 1px solid rgba(0, 255, 0, 0.1);
+            color: rgba(0, 255, 0, 0.1);
             width: 40px;
             height: 40px;
             border-radius: 5px;
@@ -42,12 +42,12 @@
             transition: all 0.3s ease;
             font-family: inherit;
         }
-        #fullscreen-btn:hover, #fullscreen-btn:active,
-        #refresh-btn:hover, #refresh-btn:active {
+        .hidden-btn:hover, .hidden-btn:active {
             background: rgba(0, 255, 0, 0.2);
             border-color: #0f0;
             color: #0f0;
         }
+        
         #fullscreen-btn { right: 15px; }
         #refresh-btn { left: 15px; }
 
@@ -59,9 +59,7 @@
             transform: translate(-50%, -50%) scale(1.3);
             object-fit: fill; 
             pointer-events: none; 
-            /* High z-index ensures it stays on top of the logo */
             z-index: 9999;
-            /* Removed mix-blend-mode so the shell borders are solidly opaque */
         }
 
         /* --- 2: UTHM LOGO FACE BACKGROUND --- */
@@ -89,7 +87,6 @@
             top: 0; left: 0;
             padding: 80px; 
             box-sizing: border-box;
-            /* Default screen z-index is behind the shell (10 vs 9999) */
             z-index: 10;
         }
         .screen.active { display: flex; }
@@ -374,7 +371,7 @@
         /* --- SCREEN 5: FINAL LOGO (BREATHING ALMOST FULLSCREEN) --- */
         #screen-final-logo { 
             background-color: #000; 
-            z-index: 100; /* Z-index 100 places it firmly BEHIND the shell (9999) */
+            z-index: 100; 
         }
 
         .final-logo-container {
@@ -425,14 +422,14 @@
 <body>
 
     <!-- HIDDEN UTILITY BUTTONS -->
-    <button id="refresh-btn" onclick="location.reload()" title="Refresh Page">↻</button>
-    <button id="fullscreen-btn" onclick="toggleFullScreen()" title="Toggle Fullscreen">⛶</button>
+    <button id="refresh-btn" class="hidden-btn" onclick="location.reload()" title="Refresh Page">↻</button>
+    <button id="fullscreen-btn" class="hidden-btn" onclick="toggleFullScreen()" title="Toggle Fullscreen">⛶</button>
 
-    <!-- OVERLAY 1: THE ROBOT SHELL (This sits on top of everything now) -->
-    <img src="shell.png" alt="Robot Frame" class="robot-shell-overlay">
+    <!-- OVERLAY 1: THE ROBOT SHELL -->
+    <img id="robot-shell" src="" alt="Robot Frame" class="robot-shell-overlay">
 
     <!-- OVERLAY 2: THE BACKGROUND UTHM LOGO -->
-    <img src="image_c8c162_2.png" alt="UTHM Background" class="bg-watermark">
+    <img id="bg-watermark" src="" alt="Background Watermark" class="bg-watermark">
 
     <!-- SCREEN 1: GREEN TURBINE EYES -->
     <div id="screen-eyes" class="screen active">
@@ -448,7 +445,7 @@
         <div class="scan-instruction">AWAITING BIOMETRIC INPUT</div>
         
         <div class="scan-container" id="scan-pad" onclick="triggerScanAnimation()">
-            <img src="palms.jpg" alt="Scanning Interface" class="generated-palm-image">
+            <img id="active-scanner-img" src="" alt="Scanning Interface" class="generated-palm-image">
             <div class="hud-overlay">
                 <div class="hud-text top-left">SYS.VER: 9.0.4<br>STATUS: IDLE</div>
                 <div class="hud-text top-right">BIO-METRIC<br>RECEIVER</div>
@@ -465,9 +462,9 @@
         <h1 class="status-accepted">ACCESS GRANTED</h1>
         <div class="welcome-msg">
             Welcome<br>
-            <span class="highlight" id="guest-name-display">Guest Name Here</span><br>
+            <span class="highlight" id="guest-name-display"></span><br>
             to<br>
-            <span class="highlight" id="event-name-display">Event Name Here</span>
+            <span class="highlight" id="event-name-display"></span>
         </div>
     </div>
 
@@ -485,15 +482,24 @@
     <!-- SCREEN 5: FINAL LOGO SCREEN (BREATHING) -->
     <div id="screen-final-logo" class="screen">
         <div class="final-logo-container">
-            <img src="final.jpg" alt="Final Logo Error" class="final-logo">
+            <img id="active-final-logo" src="" alt="Final Logo Error" class="final-logo">
         </div>
     </div>
 
+    <!-- LOAD CONFIGURATION FILE -->
+    <script src="config.js"></script>
+
     <script>
-        // --- CONFIGURATION ---
-        const guestName = "EN. ZULKURNAIN BIN ABDUL RAHMAN<br><span class='sub-title'>Pengarah Pendidikan Negeri Johor</span>";
-        const eventName = "MAJLIS PELANTIKAN SEKOLAH ANGKAT<br>UNIVERSITI TUN HUSSEIN ONN MALAYSIA FASA 3<br>DAN MAJLIS PENUTUPAN KEMBARA MERDEKA DIGITAL";
-        
+        // ==========================================
+        //         APPLY CONFIGURATION
+        // ==========================================
+        document.getElementById('guest-name-display').innerHTML = AppConfig.guestName;
+        document.getElementById('event-name-display').innerHTML = AppConfig.eventName;
+        document.getElementById('robot-shell').src = AppConfig.shellImage;
+        document.getElementById('bg-watermark').src = AppConfig.backgroundImage;
+        document.getElementById('active-scanner-img').src = AppConfig.scannerImage;
+        document.getElementById('active-final-logo').src = AppConfig.finalLogoImage;
+
         // --- DOM Elements ---
         const screenEyes = document.getElementById('screen-eyes');
         const screenScan = document.getElementById('screen-scan');
@@ -504,14 +510,10 @@
         const countdownDisplay = document.getElementById('countdown-display');
         const initiateBtn = document.getElementById('initiate-btn');
         const progressFill = document.getElementById('progress-fill');
-        const generatedPalmImage = document.querySelector('.generated-palm-image');
+        const generatedPalmImage = document.getElementById('active-scanner-img');
         const dataStream = document.getElementById('data-stream');
 
         let scrambleInterval;
-
-        // Apply config dynamically using innerHTML to render the <br> and <span> tags
-        document.getElementById('guest-name-display').innerHTML = guestName;
-        document.getElementById('event-name-display').innerHTML = eventName;
 
         // ==========================================
         //         AUDIO SYNTHESIZER ENGINE
