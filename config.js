@@ -11,7 +11,7 @@ const AppConfig = {
     // --- IMAGE SETTINGS ---
     // To change images, upload the new image to the GitHub repository and type its exact filename below.
     shellImage: "shell.png",
-    backgroundImage: "image_c8c162_2.png",
-    scannerImage: "palms.jpg",
-    finalLogoImage: "final.jpg"
+    backgroundImage: "logo.png",
+    scannerImage: "login.jpg",
+    finalLogoImage: "banner.jpg"
 };
